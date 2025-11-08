@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOLUMETRIC GRAPH</title>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+  <script type="text/javascript" src="scriptje.js" charset="utf-8"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sen&display=swap" crossorigin="anonymous">
+  <link rel="stylesheet" href="./styles/style.css">
+  <title>VOLUMETRIC GRAPH</title>
+</head>
+
+<body>
+  <header>
+    <h1>VOLUMETRIC GRAPH</h1>
+  </header>
+  <div id="content">
+
+    <svg id="tekenbord" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+      viewBox="0 0 500 500">
+      <defs>
+      </defs>
+      <g id="Layer_1" data-name="Layer 1">
+      </g>
+    </svg>
+    <text id ="hoekwaarde" align="center"></text>
+    <input type="range" min="-45" max="45" value="0" class="slider" id="hoekSlider">
+
+    <div class="story">
+      <h1>
+        Teken een kubus
+      </h1>
+      <button onclick="removeLayer()">-</button><button onclick="addLayer()">+</button>
+      <ul id="items">
+      </ul>
+      <p>
+        <span>
+          Een kubus wordt gegenereerd via javascript in vectorvorm
+        </span>
+      </p>
+    </div>
+  </div>
+  <footer>
+    <p>&copy; 2025 Perre Verhoeven
+    <p>
+  </footer>
+</body>
+
+</html>

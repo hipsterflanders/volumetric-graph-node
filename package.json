@@ -1,0 +1,22 @@
+{
+  "name": "volumetric-graph-node",
+  "version": "1.0.0",
+  "description": "A node app that displays number ratios on a cube",
+  "keywords": [
+    "graph",
+    "cube",
+    "ratio"
+  ],
+  "license": "ISC",
+  "author": "Perre Verhoeven",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {}
+}

@@ -1,0 +1,171 @@
+/* Coolors Exported Palette - coolors.co/545f66-829399-d0f4ea-e8fcc2-b1cc74 */
+/* RGB */
+body {
+  font-family: "Sen", sans-serif;
+  background: #242424;
+}
+
+#tekenbord {
+  width: 100vw;
+  height: 50vh;
+}
+
+header, .contact {
+  font-family: "Sen", sans-serif;
+  color: #484759;
+  width: 90vw;
+  height: 10vh;
+  margin: 5vw;
+}
+header h1, .contact h1 {
+  color: white;
+  text-align: center;
+  font-size: 4em;
+}
+
+footer {
+  color: #616161;
+  margin-left: 1em;
+}
+
+.story {
+  margin-left: 10vw;
+  margin-right: 10vw;
+  min-width: 80vw;
+}
+.story .icon-margin {
+  margin-left: 2vw;
+  display: inline;
+}
+.story h1, .story h2 {
+  color: white;
+  width: fit-content;
+}
+.story ol, .story li {
+  color: white;
+}
+.story span {
+  color: black;
+  background-color: white;
+}
+.story .warning {
+  color: lightgrey;
+  background-color: black;
+}
+.story ul {
+  padding: 0;
+  list-style-type: none;
+}
+.story tr {
+  text-align: right;
+  color: black;
+  background-color: white;
+}
+.story tr span {
+  float: right;
+  background-color: #fff700;
+}
+.story a {
+  background-color: black;
+  color: orange;
+}
+
+#content {
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*height: 100vh; */
+  margin: auto;
+}
+
+.chart {
+  margin: auto;
+}
+
+.messageHolder {
+  /*display: flex;*/
+  /*flex-wrap: wrap;*/
+}
+
+.info {
+  font-family: "Sen", sans-serif;
+  color: #484759;
+}
+
+.contact {
+  color: #484759;
+}
+.contact h1 {
+  font-size: 1em;
+}
+
+form {
+  padding: 10px;
+}
+
+#cameraview {
+  border-radius: 5px;
+  background-color: #484759;
+}
+
+.message {
+  background: #484759;
+  border-radius: 2px;
+  color: white;
+  padding: 5px;
+}
+
+.hover{
+  stroke: white;
+}
+
+.out{
+  stroke: grey;
+}
+
+.leadertext{
+  fill: grey;
+  font-size: large;
+}
+
+.leadertexthover{
+  fill: white;
+  font-size: large;
+}
+
+input{
+  width: -webkit-fill-available;
+  height: 2em;
+}
+
+li {
+  padding: 0px;
+  border-style: solid;
+  border-width: initial;
+  border-color: #444444;
+  border-radius: 5px;
+  background: #8C877E;
+  font-family: "Sen", sans-serif;
+  font-weight: bold;
+  color: #000000;
+  display: flex;
+}
+
+button {
+  padding: 5px;
+  border-style: solid;
+  border-width: initial;
+  border-color: #444444;
+  border-radius: 5px;
+  background: #8C877E;
+  font-family: "Sen", sans-serif;
+  font-weight: bold;
+  color: #000000;
+}
+
+button:hover,li:hover {
+  border-style: solid;
+  border-width: initial;
+  background: #9695A6;
+  color: white;
+  border-color: #8C877E;
+}
