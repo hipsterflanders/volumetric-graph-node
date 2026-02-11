@@ -17,27 +17,28 @@
     <h1>VOLUMETRIC GRAPH</h1>
   </header>
   <div id="content">
-
-    <svg id="tekenbord" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    <div id="isoMetricCube">
+        <svg id="tekenbord" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
       viewBox="0 0 500 500">
       <defs>
       </defs>
       <g id="Layer_1" data-name="Layer 1">
       </g>
-    </svg>
-    <text id ="hoekwaarde" align="center"></text>
-    <input type="range" min="-45" max="45" value="0" class="slider" id="hoekSlider">
+      </svg>
+      <text id ="hoekwaarde" align="center"></text>
+      <input type="range" min="-45" max="45" value="0" class="slider" id="hoekSlider">
+    </div>
 
-    <div class="story">
+    <div id="laagjes">
       <h1>
-        Teken een kubus
+        Add layers
       </h1>
-      <button onclick="removeLayer()">-</button><button onclick="addLayer()">+</button>
+      <button onclick="removeLayer()" class="knopje">-</button><button onclick="addLayer()"  class="knopje">+</button>
       <ul id="items">
       </ul>
       <p>
         <span>
-          Een kubus wordt gegenereerd via javascript in vectorvorm
+          The Cube gets devided in parts equal to the ratio of the specified numbers.
         </span>
       </p>
     </div>

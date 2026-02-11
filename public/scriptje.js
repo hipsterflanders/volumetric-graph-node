@@ -1,3 +1,5 @@
+// code to generate a vector cube devided in parts according to the ratio of the specified numbers
+
 var svg = null;
 
 var path = null;
@@ -100,10 +102,13 @@ function addLayer(){
     let kleurvakje = document.createElement('input');
     tekstvakje.setAttribute('type','text');
     tekstvakje.setAttribute('value','layer '+ el.childElementCount);
+    tekstvakje.setAttribute('class','tekstveldje');
     jaarvakje.setAttribute('type','number');
     jaarvakje.setAttribute('value',20);
+    jaarvakje.setAttribute('class','getalinput');
     kleurvakje.setAttribute('type','color');
     kleurvakje.setAttribute('value',hslToHex(el.childElementCount*20,100,50));
+    kleurvakje.setAttribute('class','kleurinput');
     laagje.appendChild(tekstvakje);
     laagje.appendChild(jaarvakje);
     laagje.appendChild(kleurvakje);
