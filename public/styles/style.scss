@@ -1,0 +1,164 @@
+@import "./variables";
+@import './palette';
+
+body {
+    font-family: $font;
+    background: #f22d0d;
+  }
+
+@mixin flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: top;
+}
+
+@mixin thickborder(){
+    border-style: solid;
+    border-width: initial;
+
+}
+
+#bom{
+    margin-left: 20vw;
+    width: 60vw;
+    height: 60vh;
+}
+
+header{
+    //@include flexCenter();
+
+    font-family: $font;
+    color: $color1;
+    height: 100vh;
+
+    //height: 10vh;
+    h1{
+        color: white;
+        text-align: center;
+        font-size: 4em;
+    }
+}
+
+footer{
+    color: #993617;
+    margin-left: 1em;
+  }
+
+.story{
+
+    .icon-margin{
+        margin-left: 2vw;
+        display: inline;
+    }
+
+    margin-left: 10vw;
+    margin-right: 10vw;
+    h1, h2{
+        color: white;
+        width: fit-content;
+    }
+
+    ol,li{
+        color: white;
+    }    
+    span{
+        //background-color: white;
+        color: black;
+        background-color: white;
+       // box-shadow: 0.5em 0 0 white,-0.5em 0 0 #343132;
+    }
+    .warning{
+        color: lightgrey;
+        background-color: black;
+    }
+    ul{
+        padding: 0;
+        list-style-type: none;
+    }
+    tr{
+        text-align: right;
+        color: black;
+        background-color: white;
+        //width: fit-content;
+        span{
+            float: right;
+            //margin-left: 1em;
+            background-color: #fff700;
+        }
+    }
+    a{
+        background-color: black;
+        color: orange;
+    }
+    min-width: 80vw;
+}
+
+#content{
+    display: flex;
+    flex-direction: column;
+    /*height: 100vh; */
+    margin:auto;
+}
+
+.chart{
+    margin: auto;
+}
+
+.messageHolder{
+    //@include flexCenter();
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.info{
+    font-family: $font;
+    color: $color1;
+}
+
+.contact{
+    @extend header;
+    color: $color1;
+    h1{
+        font-size: 1em;
+    }
+}
+
+form{
+    padding: 10px;
+}
+
+#cameraview{
+    border-radius: 5px;
+    background-color: $color1;
+}
+
+.message{
+ background: $color1;
+ border-radius: 2px;
+ color: white;
+ padding: 5px;
+}
+
+button{
+        padding: 10px;
+        @include thickborder();
+        border-color: $color3;
+        border-radius: 5px;
+        background: $color2;
+        //font-family: Arial, Helvetica, sans-serif;
+        font-family: $font;
+        font-weight: bold;
+        color: $color3;
+        &:hover{
+            @include thickborder();
+            background: $color3;
+            color: $color2;
+            border-color: $color2;
+        }
+        &::after{
+            @include thickborder();
+            background: $color3;
+            color: $color2;
+            border-color: $color2;
+        }
+}
