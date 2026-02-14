@@ -6,24 +6,24 @@ body {
 }
 
 #tekenbord {
-  height: 50vw;
+  /*height: 50vw;*/
   max-height: 40em;
 }
 
 header, .contact {
   font-family: "Sen", sans-serif;
   color: #484759;
-  width: 90vw;
-  height: 10vh;
-  margin: 5vw;
+  width: 100vw;
+  height: fit-content;
+  margin-top: 3em;
 }
 header h1, .contact h1 {
   color: white;
   text-align: center;
-  font-size: 4em;
+  font-size: 3em;
 }
 
-h1 {
+h1,span {
   color: #8C877E;
 }
 
@@ -72,18 +72,58 @@ form {
   stroke: grey;
 }
 
+ul {
+      padding-inline-start: 0px;
+}
+
+li {
+  display: grid;
+  grid-template-areas: 
+    "tekst tekst"
+    "getal kleur";
+  grid-template-columns: 50% 50%;
+  border: none;
+  background: #8C877E;
+  font-family: "Sen", sans-serif;
+  font-weight: bold;
+  color: #000000;
+  list-style: none;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
 .tekstveldje{
-  width: flex;
+  grid-area: tekst;
   font-size: 2em;
   padding: 0;
-  border-radius: 5px;
+  padding-left: 0.5em;
+  border-width: 1px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  font-size: 2em;
 }
 
 .getalinput{
+  grid-area: getal;
+  border-style: solid;
+  border-color: #000000;
   font-size: 2em;
   padding: 0;
-  border-radius: 5px;
+  padding-left: 0.5em;
+  border-width: 1px;
+  font-size: 2em;
+  border-bottom-left-radius: 4px;
 }
+
+  .kleurinput{
+    grid-area: kleur;
+    padding: 0px;
+    border: none;
+    inline-size: 50%;
+    height: 100%;
+    width: 100%;
+    border-bottom-right-radius: 4px;
+  }
 
 .leadertext{
   fill: grey;
@@ -100,14 +140,27 @@ input{
   height: 2em;
 }
 
+.slider {
+    width: 96%;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+
+  #hoekwaarde {
+    color: white;
+    margin-left: 2%;
+  }
+
+  #tekenbord {
+    width: 100%;
+    height: 100%;
+  }
+
 @media screen and (orientation:landscape) {
   #laagjes {
     display: inline-block;
     width: 49vw;
-  }
-
-  #tekenbord {
-    width: 50vw;
+    margin-right: 1vw;
   }
 
   #isoMetricCube {
@@ -116,41 +169,22 @@ input{
   }
 
   #content {
-  margin: auto;
+  margin: 0px;
   display: flex;
-  }
-
-  .kleurinput{
-    width:24vw;
-  }
-
-  .getalinput{
-   width: 24vw;
+  width: 100vw;
   }
 }
 
-
-
 @media screen and (orientation:portrait) {
-  #laagjes {
+  #isoMetricCube {
     display: inline-block;
-    width: 98vw;
-  }
-
-  #tekenbord {
     width: 100vw;
   }
 
-  #isoMetricCube {
+  #laagjes {
     display: inline-block;
-  }
-
-  .kleurinput{
-    width: 49vw;
-  }
-
-  .getalinput{
-   width: 48vw;
+    width: 96vw;
+    margin: 2vw;
   }
 }
 
@@ -159,6 +193,11 @@ input{
 .knopje {
   font-size: 1em;
   width: 2em;
+  height: 2em;
+}
+
+.knop {
+  font-size: 1em;
   height: 2em;
 }
 
@@ -180,33 +219,11 @@ input{
   height: 2em;
 }
 
-.getalinput {
+.knop {
   font-size: 2em;
+  height: 2em;
 }
 
-.tekstveldje {
-  font-size: 2em;
-}
-
-}
-
-li {
-  padding: 0px;
-  border-style: solid;
-  border-width: initial;
-  border-color: #444444;
-  border-radius: 5px;
-  background: #8C877E;
-  font-family: "Sen", sans-serif;
-  font-weight: bold;
-  color: #000000;
-  list-style: none;
-}
-
-
-
-ul {
-      padding-inline-start: 0px;
 }
 
 button {
