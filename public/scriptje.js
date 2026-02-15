@@ -8,8 +8,8 @@ var linker_vlak = null;
 var rechter_vlak = null;
 var boven_vlak = null;
 
-const gx = 250;
-const gy = 490;
+const gx = 400;
+const gy = 500;
 
 var hoekwaarde = null;
 var hoektan = 0.5;
@@ -54,7 +54,7 @@ function updateLayers(){
         let layername = el.children[i].children[0].value;
         let layerVolume = Number.parseInt(el.children[i].children[1].value);
         totalVolume += layerVolume;
-        let kleurlaagje = hextoHue(el.children[i].children[2].value);
+        let kleurlaagje = hexToHSV(el.children[i].children[2].value);
         laagjes[el.childElementCount-i] = {layername, volume: layerVolume, kleurlaagje};
     }
 
@@ -150,7 +150,8 @@ function kleur(heu, saturiation, lightness){
     return "hsl(" + heu + ", " + saturiation + "%, " + lightness +"%)";
 }
 
-function hextoHue(hex) {
+
+function hexToHSV(hex) {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 
     let r = parseInt(result[1], 16);
@@ -175,11 +176,13 @@ function hextoHue(hex) {
         h /= 6;
     }
 
+    var hsv = {};
+
     h = Math.round(h*360);
     s = Math.round(s*100);
-    l = Math.round(l*100);
+    v = Math.round(l*100);
 
-    return h;
+    return {h,s,v};
 }
 
 function hslToHex(h, s, l) {
@@ -250,7 +253,7 @@ function defUnitVectors(a){
     rz = vz;
 }
 
-function tekenLaag(cx, cy, hoogte, hue, name="nameless"){
+function tekenLaag(cx, cy, hoogte, hsv, name="nameless"){
     const vgroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
     const vtext = document.createElementNS("http://www.w3.org/2000/svg", "text");
 
@@ -258,14 +261,15 @@ function tekenLaag(cx, cy, hoogte, hue, name="nameless"){
     lstart[1] += hoogte/2;
     let leind = lstart.add(new Vector(-50,0));
 
-    vtext.setAttribute('x',leind[0] - name.length*10);
+    vtext.setAttribute('x',leind[0] - 10);
     vtext.setAttribute('y',leind[1]+ 5);
+    vtext.setAttribute('text-anchor','end');
     vtext.setAttribute('class','leadertext');
     vtext.innerHTML = name;
 
-    linker_vlak = tekenVlak(linkervlak(cx, cy,hoogte,r),kleur(hue, 100, 40));
-    rechter_vlak = tekenVlak(rechtervlak(cx, cy,hoogte,r),kleur(hue, 100, 50));
-    boven_vlak = tekenVlak(bovenvlak(cx, cy,r,r),kleur(hue, 100, 60));
+    linker_vlak = tekenVlak(linkervlak(cx, cy,hoogte,r),kleur(hsv.h, hsv.s, 40));
+    rechter_vlak = tekenVlak(rechtervlak(cx, cy,hoogte,r),kleur(hsv.h, hsv.s, 50));
+    boven_vlak = tekenVlak(bovenvlak(cx, cy,r,r),kleur(hsv.h, hsv.s, 60));
     lijntje = tekenLijn(lstart,leind,'white');
     vgroup.appendChild(boven_vlak);
     vgroup.appendChild(linker_vlak);
@@ -281,7 +285,7 @@ function tekenLaag(cx, cy, hoogte, hue, name="nameless"){
     tekenbordSVG.appendChild(vgroup);
 }
 
-function tekenReepje(cx, cy, hoogte, breedte, hue, name="nameless"){
+function tekenReepje(cx, cy, hoogte, breedte, hsv, name="nameless"){
     const vgroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
     const vtext = document.createElementNS("http://www.w3.org/2000/svg", "text");
 
@@ -293,9 +297,9 @@ function tekenReepje(cx, cy, hoogte, breedte, hue, name="nameless"){
     vtext.setAttribute('class','leadertext');
     vtext.innerHTML = name;
 
-    linker_vlak = tekenVlak(linkervlak(cx, cy,hoogte, breedte),kleur(hue, 100, 40));
-    rechter_vlak = tekenVlak(rechtervlak(cx, cy,hoogte,r),kleur(hue, 100, 50));
-    boven_vlak = tekenVlak(bovenvlak(cx, cy,breedte,r),kleur(hue, 100, 60));
+    linker_vlak = tekenVlak(linkervlak(cx, cy,hoogte, breedte),kleur(hsv.h, hsv.s, 40));
+    rechter_vlak = tekenVlak(rechtervlak(cx, cy,hoogte,r),kleur(hsv.h, hsv.s, 50));
+    boven_vlak = tekenVlak(bovenvlak(cx, cy,breedte,r),kleur(hsv.h, hsv.s, 60));
     lijntje = tekenLijn(lstart,leind,'white');
     vgroup.appendChild(boven_vlak);
     vgroup.appendChild(linker_vlak);
@@ -311,13 +315,13 @@ function tekenReepje(cx, cy, hoogte, breedte, hue, name="nameless"){
     tekenbordSVG.appendChild(vgroup);
 }
 
-function tekenBlokje(cx, cy, hoogte, breedte, diepte, hue, name="nameless"){
+function tekenBlokje(cx, cy, hoogte, breedte, diepte, hsv, name="nameless"){
     const vgroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
     const vtext = document.createElementNS("http://www.w3.org/2000/svg", "text");
 
     let lstart = new Vector(cx, cy).add(ruy.multiply(diepte/2)); //.add(rux.multiply(breedte).min());
     lstart[1] += hoogte/2;
-    let x_naast = r+100+ry[0];
+    let x_naast = r+220+rx[0];
     let a = x_naast  - lstart[0];
     let o = a*hoektan;
 
@@ -329,9 +333,9 @@ function tekenBlokje(cx, cy, hoogte, breedte, diepte, hue, name="nameless"){
     vtext.setAttribute('class','leadertext');
     vtext.innerHTML = name;
 
-    linker_vlak = tekenVlak(linkervlak(cx, cy,hoogte, breedte),kleur(hue, 100, 40));
-    rechter_vlak = tekenVlak(rechtervlak(cx, cy,hoogte,diepte),kleur(hue, 100, 50));
-    boven_vlak = tekenVlak(bovenvlak(cx, cy,breedte,diepte),kleur(hue, 100, 60));
+    linker_vlak = tekenVlak(linkervlak(cx, cy,hoogte, breedte),kleur(hsv.h, hsv.s, 40));
+    rechter_vlak = tekenVlak(rechtervlak(cx, cy,hoogte,diepte),kleur(hsv.h, hsv.s, 50));
+    boven_vlak = tekenVlak(bovenvlak(cx, cy,breedte,diepte),kleur(hsv.h, hsv.s, 60));
     lijntje = tekenLijn(lstart,leind,'grey');
     vgroup.appendChild(boven_vlak);
     vgroup.appendChild(linker_vlak);
