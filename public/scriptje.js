@@ -52,10 +52,11 @@ function updateLayers(){
     var totalDepth = 0;
     for (let i = el.childElementCount-1; i > -1; i--) {
         let layername = el.children[i].children[0].value;
-        let layerVolume = Number.parseInt(el.children[i].children[1].value);
+        let layerVolume = Number.parseInt(el.children[i].children[2].value);
         totalVolume += layerVolume;
-        let kleurlaagje = hexToHSV(el.children[i].children[2].value);
-        laagjes[el.childElementCount-i] = {layername, volume: layerVolume, kleurlaagje};
+        let kleurlaagje = hexToHSV(el.children[i].children[3].value);
+        let href = el.children[i].children[1].value
+        laagjes[el.childElementCount-i] = {layername, volume: layerVolume, kleurlaagje, href};
     }
 
     var hlaag = 0;
@@ -63,7 +64,8 @@ function updateLayers(){
         let dikte = laag.volume/totalVolume*r;
         if(dikte >= r/10){
             hlaag = hlaag - dikte;
-            tekenLaag(gx, (gy+hlaag),dikte,laag.kleurlaagje,laag.layername);
+            tekenLaag(gx, (gy+hlaag),dikte,laag.kleurlaagje,laag.layername,laag.href);
+            console.log(laag.href);
         }else{
             totalWidth += laag.volume;
             if(dikte >= r/100){
@@ -81,7 +83,7 @@ function updateLayers(){
     reepjes.forEach(reepje =>{
         let breedte = reepje.volume/totalWidth*r;
         origin = origin.add(rux.multiply(breedte));
-        tekenReepje(origin[0], origin[1],hoogtetop,breedte,reepje.kleurlaagje,reepje.layername);
+        tekenReepje(origin[0], origin[1],hoogtetop,breedte,reepje.kleurlaagje,reepje.layername,reepje.href);
     });
 
     let breedteblokje = totalDepth/totalWidth*r;
@@ -90,7 +92,7 @@ function updateLayers(){
     blokjes.forEach(blokje =>{
         let diepte = blokje.volume/totalDepth*r;
         origin = origin.add(ruy.multiply(diepte).min());
-        tekenBlokje(origin[0], origin[1],hoogtetop,breedteblokje,diepte,blokje.kleurlaagje,blokje.layername);
+        tekenBlokje(origin[0], origin[1],hoogtetop,breedteblokje,diepte,blokje.kleurlaagje,blokje.layername,blokje.href);
     });
 
     createDownloadURL(tekenbordSVG);
@@ -122,11 +124,16 @@ function createDownloadURL(svg){
 function addLayer(){
     let laagje = document.createElement('li');
     let tekstvakje = document.createElement('input');
+    let urlvakje = document.createElement('input');
     let jaarvakje = document.createElement('input');
     let kleurvakje = document.createElement('input');
     tekstvakje.setAttribute('type','text');
     tekstvakje.setAttribute('value','layer '+ el.childElementCount);
     tekstvakje.setAttribute('class','tekstveldje');
+    urlvakje.setAttribute('type','text');
+    //urlvakje.setAttribute('value','url');
+    urlvakje.setAttribute('class','urlveldjeHidden');
+    urlvakje.setAttribute('placeholder','Type your url here.');
     jaarvakje.setAttribute('type','number');
     jaarvakje.setAttribute('value',20);
     jaarvakje.setAttribute('class','getalinput');
@@ -134,14 +141,29 @@ function addLayer(){
     kleurvakje.setAttribute('value',hslToHex(el.childElementCount*20,100,50));
     kleurvakje.setAttribute('class','kleurinput');
     laagje.appendChild(tekstvakje);
+    laagje.appendChild(urlvakje);
     laagje.appendChild(jaarvakje);
     laagje.appendChild(kleurvakje);
+    laagje.setAttribute('onclick','setSelected(this)')
     el.appendChild(laagje);
     updateLayers();
 }
 function removeLayer(){
     el.removeChild(el.lastElementChild);
     updateLayers();
+}
+
+function setSelected(element){
+    deselectItems();
+    element.setAttribute('class','selected');
+    element.children[1].setAttribute('class','urlveldje');
+}
+
+function deselectItems() {
+  Array.from(el.children).forEach(item => {
+    item.children[1].setAttribute('class','urlveldjeHidden');
+    item.setAttribute('class','deselected');
+  });
 }
 
 var t = 0;
@@ -154,12 +176,12 @@ function kleur(heu, saturiation, lightness){
 function hexToHSV(hex) {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 
-    let r = parseInt(result[1], 16);
-    let g = parseInt(result[2], 16);
-    let b = parseInt(result[3], 16);
+    let red = parseInt(result[1], 16);
+    let green = parseInt(result[2], 16);
+    let blue = parseInt(result[3], 16);
 
-    r /= 255, g /= 255, b /= 255;
-    let max = Math.max(r, g, b), min = Math.min(r, g, b);
+    red /= 255, green /= 255, blue /= 255;
+    let max = Math.max(red, green, blue), min = Math.min(red, green, blue);
     let h, s, l = (max + min) / 2;
 
     if (max == min){
@@ -168,9 +190,9 @@ function hexToHSV(hex) {
         var d = max - min;
         s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
         switch(max) {
-            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-            case g: h = (b - r) / d + 2; break;
-            case b: h = (r - g) / d + 4; break;
+            case red: h = (green - blue) / d + (green < blue ? 6 : 0); break;
+            case green: h = (blue - red) / d + 2; break;
+            case blue: h = (red - green) / d + 4; break;
         }
         
         h /= 6;
@@ -253,9 +275,10 @@ function defUnitVectors(a){
     rz = vz;
 }
 
-function tekenLaag(cx, cy, hoogte, hsv, name="nameless"){
+function tekenLaag(cx, cy, hoogte, hsv, name="nameless",href){
     const vgroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
     const vtext = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    const vurl = document.createElementNS("http://www.w3.org/2000/svg", "a");
 
     let lstart = new Vector(cx, cy).add(rx.min());
     lstart[1] += hoogte/2;
@@ -275,7 +298,10 @@ function tekenLaag(cx, cy, hoogte, hsv, name="nameless"){
     vgroup.appendChild(linker_vlak);
     vgroup.appendChild(rechter_vlak);
     vgroup.appendChild(lijntje);
-    vgroup.appendChild(vtext);
+    vurl.setAttribute("href",href);
+    vurl.setAttribute("target","_blank");
+    vurl.appendChild(vtext);
+    vgroup.appendChild(vurl);
 
     vgroup.setAttribute("id", name);
     vgroup.setAttribute("onmouseover", "hoverlayer(this)");
@@ -285,9 +311,10 @@ function tekenLaag(cx, cy, hoogte, hsv, name="nameless"){
     tekenbordSVG.appendChild(vgroup);
 }
 
-function tekenReepje(cx, cy, hoogte, breedte, hsv, name="nameless"){
+function tekenReepje(cx, cy, hoogte, breedte, hsv, name="nameless",href){
     const vgroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
     const vtext = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    const vurl = document.createElementNS("http://www.w3.org/2000/svg", "a");
 
     let lstart = new Vector(cx, cy).add(ry).add(rux.multiply(breedte/2).min());
     let leind = lstart.add(ruy.multiply(50));
@@ -305,7 +332,10 @@ function tekenReepje(cx, cy, hoogte, breedte, hsv, name="nameless"){
     vgroup.appendChild(linker_vlak);
     vgroup.appendChild(rechter_vlak);
     vgroup.appendChild(lijntje);
-    vgroup.appendChild(vtext);
+    vurl.setAttribute("href",href);
+    vurl.setAttribute("target","_blank");
+    vurl.appendChild(vtext);
+    vgroup.appendChild(vurl);
 
     vgroup.setAttribute("id", name);
     vgroup.setAttribute("onmouseover", "hoverlayer(this)");
@@ -315,13 +345,14 @@ function tekenReepje(cx, cy, hoogte, breedte, hsv, name="nameless"){
     tekenbordSVG.appendChild(vgroup);
 }
 
-function tekenBlokje(cx, cy, hoogte, breedte, diepte, hsv, name="nameless"){
+function tekenBlokje(cx, cy, hoogte, breedte, diepte, hsv, name="nameless",href){
     const vgroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
     const vtext = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    const vurl = document.createElementNS("http://www.w3.org/2000/svg", "a");
 
     let lstart = new Vector(cx, cy).add(ruy.multiply(diepte/2)); //.add(rux.multiply(breedte).min());
     lstart[1] += hoogte/2;
-    let x_naast = r+220+rx[0];
+    let x_naast = r+220+ry[0];
     let a = x_naast  - lstart[0];
     let o = a*hoektan;
 
@@ -341,7 +372,10 @@ function tekenBlokje(cx, cy, hoogte, breedte, diepte, hsv, name="nameless"){
     vgroup.appendChild(linker_vlak);
     vgroup.appendChild(rechter_vlak);
     vgroup.appendChild(lijntje);
-    vgroup.appendChild(vtext);
+    vurl.setAttribute("href",href);
+    vurl.setAttribute("target","_blank");
+    vurl.appendChild(vtext);
+    vgroup.appendChild(vurl);
 
     vgroup.setAttribute("id", name);
     vgroup.setAttribute("onmouseover", "hoverlayer(this)");
@@ -355,18 +389,19 @@ function hoverlayer(layer){
     layer.children[0].setAttribute("class", "hover");
     layer.children[1].setAttribute("class", "hover");
     layer.children[2].setAttribute("class", "hover");
-    layer.children[4].setAttribute("class", "leadertexthover");
+    layer.children[4].children[0].setAttribute("class", "leadertexthover");
 }
 
 function outlayer(layer){
     layer.children[0].setAttribute("class", "out");
     layer.children[1].setAttribute("class", "out");
     layer.children[2].setAttribute("class", "out");
-    layer.children[4].setAttribute("class", "leadertext");
+    layer.children[4].children[0].setAttribute("class", "leadertext");
 }
 
 function clicklayer(layer){
     console.log(layer.id);
+    console.log(layer.href);
 }
 
 function linkervlak(cx, cy, hoogte, xbreedte) {
