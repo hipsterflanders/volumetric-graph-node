@@ -24,6 +24,7 @@ window.addEventListener('load', (event) => {
     el.addEventListener("input", updateLayers);
 
     tekenbordSVG = document.getElementById("tekenbord");
+    initIsometricGraph();
     defUnitVectors(0);
     updateAngle(0);
     addLayer();
@@ -46,7 +47,7 @@ function updateLayers(){
     laagjes = new Array();
     reepjes = new Array();
     blokjes = new Array();
-    tekenbordSVG.innerHTML = null;
+    isometricGraph.innerHTML = null;
     var totalVolume = 0;
     var totalWidth = 0;
     var totalDepth = 0;
@@ -275,6 +276,14 @@ function defUnitVectors(a){
     rz = vz;
 }
 
+var isometricGraph;
+
+function initIsometricGraph(){
+    isometricGraph = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    isometricGraph.setAttribute('id', 'isometricGraph');
+    tekenbordSVG.appendChild(isometricGraph);
+}
+
 function tekenLaag(cx, cy, hoogte, hsv, name="nameless",href){
     const vgroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
     const vtext = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -293,7 +302,7 @@ function tekenLaag(cx, cy, hoogte, hsv, name="nameless",href){
     linker_vlak = tekenVlak(linkervlak(cx, cy,hoogte,r),kleur(hsv.h, hsv.s, 40));
     rechter_vlak = tekenVlak(rechtervlak(cx, cy,hoogte,r),kleur(hsv.h, hsv.s, 50));
     boven_vlak = tekenVlak(bovenvlak(cx, cy,r,r),kleur(hsv.h, hsv.s, 60));
-    lijntje = tekenLijn(lstart,leind,'white');
+    lijntje = tekenLijn(lstart,leind,'grey');
     vgroup.appendChild(boven_vlak);
     vgroup.appendChild(linker_vlak);
     vgroup.appendChild(rechter_vlak);
@@ -308,7 +317,7 @@ function tekenLaag(cx, cy, hoogte, hsv, name="nameless",href){
     vgroup.setAttribute("onmouseout", "outlayer(this)");
     vgroup.setAttribute("onclick", "clicklayer(this)");
 
-    tekenbordSVG.appendChild(vgroup);
+    isometricGraph.appendChild(vgroup);
 }
 
 function tekenReepje(cx, cy, hoogte, breedte, hsv, name="nameless",href){
@@ -327,7 +336,7 @@ function tekenReepje(cx, cy, hoogte, breedte, hsv, name="nameless",href){
     linker_vlak = tekenVlak(linkervlak(cx, cy,hoogte, breedte),kleur(hsv.h, hsv.s, 40));
     rechter_vlak = tekenVlak(rechtervlak(cx, cy,hoogte,r),kleur(hsv.h, hsv.s, 50));
     boven_vlak = tekenVlak(bovenvlak(cx, cy,breedte,r),kleur(hsv.h, hsv.s, 60));
-    lijntje = tekenLijn(lstart,leind,'white');
+    lijntje = tekenLijn(lstart,leind,'grey');
     vgroup.appendChild(boven_vlak);
     vgroup.appendChild(linker_vlak);
     vgroup.appendChild(rechter_vlak);
@@ -342,7 +351,7 @@ function tekenReepje(cx, cy, hoogte, breedte, hsv, name="nameless",href){
     vgroup.setAttribute("onmouseout", "outlayer(this)");
     vgroup.setAttribute("onclick", "clicklayer(this)");
 
-    tekenbordSVG.appendChild(vgroup);
+    isometricGraph.appendChild(vgroup);
 }
 
 function tekenBlokje(cx, cy, hoogte, breedte, diepte, hsv, name="nameless",href){
@@ -382,7 +391,7 @@ function tekenBlokje(cx, cy, hoogte, breedte, diepte, hsv, name="nameless",href)
     vgroup.setAttribute("onmouseout", "outlayer(this)");
     vgroup.setAttribute("onclick", "clicklayer(this)");
 
-    tekenbordSVG.appendChild(vgroup);
+    isometricGraph.appendChild(vgroup);
 }
 
 function hoverlayer(layer){
